@@ -27,3 +27,23 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+test {
+    useJUnitPlatform()
+
+    afterTest { desc, result ->
+        if (result.resultType == TestResult.ResultType.FAILURE) {
+            exec {
+                commandLine '/usr/bin/afplay', '/System/Library/Sounds/Submarine.aiff', '-q', '1'
+            }
+        }
+        else if (result.resultType == TestResult.ResultType.SUCCESS) {
+            exec {
+                commandLine '/usr/bin/afplay', '/System/Library/Sounds/Glass.aiff', '-q', '1'
+            }
+        }
+    }
+
+
+}
+
